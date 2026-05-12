@@ -1,0 +1,67 @@
+// coursesData.js
+const coursesData = {
+  "British Columbia": {
+    "Grade 9": [
+      {
+        id: "bc-g9-math",
+        name: "Mathematics 9",
+        type: "Regular",
+        ap: false,
+        videoUrl: "https://example.com/videos/bc-g9-math-intro",
+        studyGuide: "Key topics: linear relations, powers, polynomials, statistics.",
+        textbookPages: "Textbook: Chapter 1–5",
+        practiceTests: [
+          { title: "Algebra Practice Test", url: "https://example.com/tests/bc-g9-math-algebra" },
+          { title: "Linear Relations Quiz", url: "https://example.com/tests/bc-g9-math-linear" }
+        ]
+      }
+    ],
+    "Grade 12": [
+      {
+        id: "bc-g12-ap-calc",
+        name: "AP Calculus AB",
+        type: "AP",
+        ap: true,
+        videoUrl: "https://example.com/videos/ap-calc-ab-intro",
+        studyGuide: "Limits, derivatives, integrals, applications of differentiation and integration.",
+        textbookPages: "Stewart Calculus: Sections 2.1–5.5",
+        practiceTests: [
+          { title: "AP Calc AB Practice Exam 1", url: "https://example.com/tests/ap-calc-ab-1" }
+        ]
+      }
+    ]
+  },
+
+  "Ontario": {
+    "Grade 9": [
+      {
+        id: "on-g9-sci",
+        name: "Science 9",
+        type: "Regular",
+        ap: false,
+        videoUrl: "https://example.com/videos/on-g9-science-intro",
+        studyGuide: "Atoms, elements, electricity, ecosystems, space.",
+        textbookPages: "Nelson Science 9: Units 1–4",
+        practiceTests: [
+          { title: "Electricity Unit Test", url: "https://example.com/tests/on-g9-sci-electricity" }
+        ]
+      }
+    ],
+    "Grade 12": [
+      {
+        id: "on-g12-ap-chem",
+        name: "AP Chemistry",
+        type: "AP",
+        ap: true,
+        videoUrl: "https://example.com/videos/ap-chem-intro",
+        studyGuide: "Stoichiometry, thermodynamics, kinetics, equilibrium, acids and bases.",
+        textbookPages: "Zumdahl Chemistry: Chapters 1–16",
+        practiceTests: [
+          { title: "AP Chem Practice Exam 1", url: "https://example.com/tests/ap-chem-1" }
+        ]
+      }
+    ]
+  }
+
+  // You’d keep adding provinces, grades, and courses here
+};
