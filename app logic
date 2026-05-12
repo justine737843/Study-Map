@@ -1,0 +1,124 @@
+// app.js
+
+const provinceSelect = document.getElementById("provinceSelect");
+const gradeSelect = document.getElementById("gradeSelect");
+const coursesList = document.getElementById("coursesList");
+
+const courseDetails = document.getElementById("courseDetails");
+const courseName = document.getElementById("courseName");
+const courseType = document.getElementById("courseType");
+const videoLink = document.getElementById("videoLink");
+const studyGuide = document.getElementById("studyGuide");
+const textbookPages = document.getElementById("textbookPages");
+const practiceTestsList = document.getElementById("practiceTestsList");
+const notesInput = document.getElementById("notesInput");
+const saveNotesBtn = document.getElementById("saveNotesBtn");
+const savedNotesDiv = document.getElementById("savedNotes");
+
+let currentCourseId = null;
+
+// --- Initialize province dropdown ---
+function initProvinces() {
+  const provinces = Object.keys(coursesData);
+  provinces.forEach((prov) => {
+    const opt = document.createElement("option");
+    opt.value = prov;
+    opt.textContent = prov;
+    provinceSelect.appendChild(opt);
+  });
+}
+
+// --- When province changes, update grades ---
+provinceSelect.addEventListener("change", () => {
+  const province = provinceSelect.value;
+  gradeSelect.innerHTML = '<option value="">Select grade</option>';
+  coursesList.innerHTML = "";
+  courseDetails.classList.add("hidden");
+
+  if (!province) return;
+
+  const grades = Object.keys(coursesData[province]);
+  grades.forEach((grade) => {
+    const opt = document.createElement("option");
+    opt.value = grade;
+    opt.textContent = grade;
+    gradeSelect.appendChild(opt);
+  });
+});
+
+// --- When grade changes, show courses ---
+gradeSelect.addEventListener("change", () => {
+  const province = provinceSelect.value;
+  const grade = gradeSelect.value;
+  coursesList.innerHTML = "";
+  courseDetails.classList.add("hidden");
+
+  if (!province || !grade) return;
+
+  const courses = coursesData[province][grade] || [];
+  if (courses.length === 0) {
+    coursesList.textContent = "No courses found for this selection yet.";
+    return;
+  }
+
+  courses.forEach((course) => {
+    const div = document.createElement("div");
+    div.className = "course-item";
+    div.textContent = `${course.name} ${course.ap ? "(AP)" : ""}`;
+    div.addEventListener("click", () => showCourseDetails(course));
+    coursesList.appendChild(div);
+  });
+});
+
+// --- Show course details ---
+function showCourseDetails(course) {
+  currentCourseId = course.id;
+
+  courseName.textContent = course.name;
+  courseType.textContent = course.ap ? "AP Course" : course.type;
+
+  videoLink.href = course.videoUrl || "#";
+  videoLink.textContent = course.videoUrl ? "Open video" : "No video link yet";
+
+  studyGuide.textContent = course.studyGuide || "No study guide added yet.";
+  textbookPages.textContent = course.textbookPages || "No textbook info yet.";
+
+  practiceTestsList.innerHTML = "";
+  if (course.practiceTests && course.practiceTests.length > 0) {
+    course.practiceTests.forEach((test) => {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = test.url;
+      a.target = "_blank";
+      a.textContent = test.title;
+      li.appendChild(a);
+      practiceTestsList.appendChild(li);
+    });
+  } else {
+    const li = document.createElement("li");
+    li.textContent = "No practice tests added yet.";
+    practiceTestsList.appendChild(li);
+  }
+
+  loadNotes();
+  courseDetails.classList.remove("hidden");
+}
+
+// --- Save notes locally (per course) ---
+saveNotesBtn.addEventListener("click", () => {
+  if (!currentCourseId) return;
+  const notes = notesInput.value;
+  localStorage.setItem(`notes_${currentCourseId}`, notes);
+  loadNotes();
+});
+
+// --- Load notes for current course ---
+function loadNotes() {
+  if (!currentCourseId) return;
+  const notes = localStorage.getItem(`notes_${currentCourseId}`) || "";
+  notesInput.value = notes;
+  savedNotesDiv.textContent = notes ? `Saved notes:\n\n${notes}` : "No notes saved yet.";
+}
+
+// Initialize app
+initProvinces();
